@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "test": "vitest run"
+    "test": "tsx --test \"src/**/*.test.ts\""
   },
   "dependencies": {
     "@pragmatic-tech-ai/todl": "file:../TODL",
@@ -21,7 +21,6 @@
   "devDependencies": {
     "@types/node": "^22.20.1",
     "tsx": "^4.0.0",
-    "typescript": "^5.5.0",
-    "vitest": "^5.0.3"
+    "typescript": "^5.5.0"
   }
 }

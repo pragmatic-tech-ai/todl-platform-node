@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it } from "node:test"
+import assert from "node:assert/strict"
 import { mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -30,7 +31,7 @@ describe('PackageEngine', () =>
     it('composes a PackageManagerService that starts with no connections', async () =>
     {
         const engine = engineOver(mkdtempSync(join(tmpdir(), 'p5b-')))
-        expect(await engine.Service.ListViews()).toEqual([])
+        assert.deepEqual(await engine.Service.ListViews(), [])
     })
 
     it('after AddConnection a matching ConnectionView is listed', async () =>
@@ -38,6 +39,6 @@ describe('PackageEngine', () =>
         const engine = engineOver(mkdtempSync(join(tmpdir(), 'p5b-')))
         await engine.Service.AddConnection({ Id: 'npm-public', DisplayName: 'npm-public', RegistryType: 'npm', Settings: {} })
         const views = await engine.Service.ListViews()
-        expect(views.map((v) => v.DisplayName)).toContain('npm-public')
+        assert.ok((views.map((v) => v.DisplayName)).includes('npm-public'))
     })
 })

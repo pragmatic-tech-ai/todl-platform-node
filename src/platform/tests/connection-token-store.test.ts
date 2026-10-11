@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it } from "node:test"
+import assert from "node:assert/strict"
 import { mkdtempSync, writeFileSync, readdirSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -22,9 +23,9 @@ describe('ConnectionTokenStore', () =>
         const dir = mkdtempSync(join(tmpdir(), 'p5b-'))
         const store = new ConnectionTokenStore(dir, new FakeEncryptor(true))
         store.SetToken('npm-public', 'secret')
-        expect(readdirSync(dir)).toContain('conn-token-npm-public.bin')
-        expect(store.HasToken('npm-public')).toBe(true)
-        expect(store.GetToken('npm-public')).toBe('secret')
+        assert.ok((readdirSync(dir)).includes('conn-token-npm-public.bin'))
+        assert.equal(store.HasToken('npm-public'), true)
+        assert.equal(store.GetToken('npm-public'), 'secret')
     })
 
     it('reads a token file written in the exact devUI on-disk layout', () =>
@@ -33,8 +34,8 @@ describe('ConnectionTokenStore', () =>
         // Simulate a file written by pre-promotion devUI (same FakeEncryptor bytes).
         writeFileSync(join(dir, 'conn-token-legacy.bin'), Buffer.from('carried-over', 'utf8'))
         const store = new ConnectionTokenStore(dir, new FakeEncryptor(true))
-        expect(store.HasToken('legacy')).toBe(true)
-        expect(store.GetToken('legacy')).toBe('carried-over')
+        assert.equal(store.HasToken('legacy'), true)
+        assert.equal(store.GetToken('legacy'), 'carried-over')
     })
 
     it('when the encryptor is unavailable, keeps tokens in memory and writes NO plaintext file', () =>
@@ -42,8 +43,8 @@ describe('ConnectionTokenStore', () =>
         const dir = mkdtempSync(join(tmpdir(), 'p5b-'))
         const store = new ConnectionTokenStore(dir, new FakeEncryptor(false))
         store.SetToken('x', 'secret')
-        expect(store.GetToken('x')).toBe('secret')                      // session memory
-        expect(existsSync(join(dir, 'conn-token-x.bin'))).toBe(false)   // never plaintext
+        assert.equal(store.GetToken('x'), 'secret')                      // session memory
+        assert.equal(existsSync(join(dir, 'conn-token-x.bin')), false)   // never plaintext
     })
 
     it('Clear removes both the in-memory and on-disk token', () =>
@@ -52,7 +53,7 @@ describe('ConnectionTokenStore', () =>
         const store = new ConnectionTokenStore(dir, new FakeEncryptor(true))
         store.SetToken('y', 'secret')
         store.Clear('y')
-        expect(store.HasToken('y')).toBe(false)
-        expect(existsSync(join(dir, 'conn-token-y.bin'))).toBe(false)
+        assert.equal(store.HasToken('y'), false)
+        assert.equal(existsSync(join(dir, 'conn-token-y.bin')), false)
     })
 })

@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it } from "node:test"
+import assert from "node:assert/strict"
 import { mkdtempSync, writeFileSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -15,8 +16,8 @@ describe('FileConnectionStore', () =>
         }))
         const store = new FileConnectionStore(dir)
         const all = await store.All()
-        expect(all.map((c) => c.Id)).toEqual(['npm-public'])
-        expect(await store.DefaultId()).toBe('npm-public')
+        assert.deepEqual(all.map((c) => c.Id), ['npm-public'])
+        assert.equal(await store.DefaultId(), 'npm-public')
     })
 
     it('maps a pre-engine flat record to a ConnectionSpec on load', async () =>
@@ -27,10 +28,10 @@ describe('FileConnectionStore', () =>
             connections: [{ id: 'legacy', name: 'Legacy', registry: 'https://r', scope: '@x', org: '', githubApi: '', tokenSource: 'env', tokenEnvVar: 'NPM_TOKEN' }],
         }))
         const spec = (await new FileConnectionStore(dir).All())[0]!
-        expect(spec.Id).toBe('legacy')
-        expect(spec.DisplayName).toBe('Legacy')
-        expect(spec.RegistryType).toBe('npm')
-        expect(spec.Settings.scope).toBe('@x')
+        assert.equal(spec.Id, 'legacy')
+        assert.equal(spec.DisplayName, 'Legacy')
+        assert.equal(spec.RegistryType, 'npm')
+        assert.equal(spec.Settings.scope, '@x')
     })
 
     it('Save appends, adopts the first as default, and round-trips the spec format', async () =>
@@ -38,9 +39,9 @@ describe('FileConnectionStore', () =>
         const dir = mkdtempSync(join(tmpdir(), 'p5b-'))
         const store = new FileConnectionStore(dir)
         await store.Save({ Id: 'a', DisplayName: 'A', RegistryType: 'npm', Settings: {} })
-        expect(await store.DefaultId()).toBe('a')
+        assert.equal(await store.DefaultId(), 'a')
         const written = JSON.parse(readFileSync(join(dir, 'connections.json'), 'utf8'))
-        expect(written.connections[0].Id).toBe('a')
+        assert.equal(written.connections[0].Id, 'a')
     })
 
     it('Delete removes the connection and repoints the default', async () =>
@@ -50,7 +51,7 @@ describe('FileConnectionStore', () =>
         await store.Save({ Id: 'a', DisplayName: 'A', RegistryType: 'npm', Settings: {} })
         await store.Save({ Id: 'b', DisplayName: 'B', RegistryType: 'npm', Settings: {} })
         await store.Delete('a')
-        expect((await store.All()).map((c) => c.Id)).toEqual(['b'])
-        expect(await store.DefaultId()).toBe('b')
+        assert.deepEqual((await store.All()).map((c) => c.Id), ['b'])
+        assert.equal(await store.DefaultId(), 'b')
     })
 })
