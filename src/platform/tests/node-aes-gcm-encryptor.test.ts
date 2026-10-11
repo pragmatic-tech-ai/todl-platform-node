@@ -36,3 +36,16 @@ test('FromBase64 builds a working encryptor', () =>
     const enc = NodeAesGcmEncryptor.FromBase64(keyB64)
     assert.equal(enc.Decrypt(enc.Encrypt('y')), 'y')
 })
+
+test('a truncated blob is rejected', () =>
+{
+    assert.throws(() => new NodeAesGcmEncryptor(randomBytes(32)).Decrypt(Buffer.alloc(5)))
+})
+
+test('tampering the IV region fails to decrypt', () =>
+{
+    const enc = new NodeAesGcmEncryptor(randomBytes(32))
+    const blob = enc.Encrypt('x')
+    blob[3] ^= 0xff
+    assert.throws(() => enc.Decrypt(blob))
+})
