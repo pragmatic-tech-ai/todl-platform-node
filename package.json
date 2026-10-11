@@ -4,10 +4,15 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "exports": { ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" } },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "test": "tsx --test \"src/**/*.test.ts\""
+    "test": "vitest run"
   },
   "dependencies": {
     "@pragmatic-tech-ai/todl": "file:../TODL",
@@ -16,6 +21,7 @@
   "devDependencies": {
     "@types/node": "^22.20.1",
     "tsx": "^4.0.0",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "vitest": "^5.0.3"
   }
 }
