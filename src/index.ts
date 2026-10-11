@@ -6,3 +6,4 @@ export { ProcessEnvironmentVariables } from "./platform/process-environment-vari
 export { PackageEngine, type PackageEngineDeps } from "./platform/package-engine.js";
 export { NodeAesGcmEncryptor } from './platform/node-aes-gcm-encryptor.js'
 export { NodeStorageProviderRegistry } from './platform/node-storage-provider-registry.js'
+export { HeadlessPromptService } from './platform/headless-prompt-service.js'
