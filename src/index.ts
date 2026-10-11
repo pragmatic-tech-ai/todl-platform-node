@@ -5,3 +5,4 @@ export { FileConnectionStore } from "./platform/file-connection-store.js";
 export { ProcessEnvironmentVariables } from "./platform/process-environment-variables.js";
 export { PackageEngine, type PackageEngineDeps } from "./platform/package-engine.js";
 export { NodeAesGcmEncryptor } from './platform/node-aes-gcm-encryptor.js'
+export { NodeStorageProviderRegistry } from './platform/node-storage-provider-registry.js'
