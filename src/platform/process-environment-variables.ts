@@ -3,7 +3,7 @@
  * record (prod: `process.env`). Backs env-sourced connection tokens and the "pick an env
  * var" affordance in the connection editor.
  *
- * Promoted from apps/devUI into plexus-core.
+ * Lives in todl-platform-node so every host shares one implementation.
  */
 import { type IEnvironmentVariables } from '@pragmatic-tech-ai/todl/package-manager'
 

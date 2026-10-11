@@ -1,5 +1,5 @@
-import { describe, it } from "node:test"
-import assert from "node:assert/strict"
+import { describe, it } from 'node:test'
+import assert from 'node:assert/strict'
 import { mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -17,26 +17,29 @@ class FakeEncryptor implements Encryptor
     public Decrypt(blob: Buffer): string { return blob.toString('utf8') }
 }
 
-function engineOver(dir: string): PackageEngine
+class PackageEngineFixture
 {
-    return new PackageEngine({
-        connectionStore: new FileConnectionStore(dir),
-        secretStore: new EncryptedSecretStore(new ConnectionTokenStore(dir, new FakeEncryptor())),
-        environment: new ProcessEnvironmentVariables({}),
-    })
+    public static Over(dir: string): PackageEngine
+    {
+        return new PackageEngine({
+            connectionStore: new FileConnectionStore(dir),
+            secretStore: new EncryptedSecretStore(new ConnectionTokenStore(dir, new FakeEncryptor())),
+            environment: new ProcessEnvironmentVariables({}),
+        })
+    }
 }
 
 describe('PackageEngine', () =>
 {
     it('composes a PackageManagerService that starts with no connections', async () =>
     {
-        const engine = engineOver(mkdtempSync(join(tmpdir(), 'p5b-')))
+        const engine = PackageEngineFixture.Over(mkdtempSync(join(tmpdir(), 'p5b-')))
         assert.deepEqual(await engine.Service.ListViews(), [])
     })
 
     it('after AddConnection a matching ConnectionView is listed', async () =>
     {
-        const engine = engineOver(mkdtempSync(join(tmpdir(), 'p5b-')))
+        const engine = PackageEngineFixture.Over(mkdtempSync(join(tmpdir(), 'p5b-')))
         await engine.Service.AddConnection({ Id: 'npm-public', DisplayName: 'npm-public', RegistryType: 'npm', Settings: {} })
         const views = await engine.Service.ListViews()
         assert.ok((views.map((v) => v.DisplayName)).includes('npm-public'))

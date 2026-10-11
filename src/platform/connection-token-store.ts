@@ -5,7 +5,7 @@
  * unit test runs with no Electron. When encryption is unavailable (a keyring-less Linux),
  * tokens are held in memory for the session and never written in plaintext.
  *
- * Promoted from apps/devUI into plexus-core, on-disk layout unchanged (byte-compat).
+ * Lives in todl-platform-node so every host shares it; on-disk layout is byte-compatible with the original devUI implementation.
  */
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'

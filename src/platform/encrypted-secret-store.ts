@@ -3,7 +3,7 @@
  * (per-connection tokens encrypted at rest, keyed by connection id). An async adapter over
  * the synchronous token store; the token never crosses the IPC bridge.
  *
- * Promoted from apps/devUI into plexus-core.
+ * Lives in todl-platform-node so every host shares one implementation.
  */
 import { type ISecretStore } from '@pragmatic-tech-ai/todl/package-manager'
 import type { ConnectionTokenStore } from './connection-token-store.js'

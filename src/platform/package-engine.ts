@@ -6,8 +6,8 @@
  * equivalent of composing the engine's package-services .mu module — done in TS because
  * that module is not a public subpath.
  *
- * Promoted from apps/devUI into plexus-core so both apps share one composition. Each app
- * supplies its own stores (its own `userData` + encryptor); the engine itself is shared.
+ * Lives in todl-platform-node so every host shares one composition. Each host
+ * supplies its own stores (its own data dir + encryptor); the engine itself is shared.
  */
 import { ServiceProvider, ServiceLifetime } from '@pragmatic-tech-ai/todl-runtime'
 import {

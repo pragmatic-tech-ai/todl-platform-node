@@ -5,8 +5,8 @@
  * Injected so the stores run under unit test with no Electron; production wires
  * `SafeStorageEncryptor` (Electron `safeStorage`).
  *
- * Promoted from apps/devUI into plexus-core so both apps share one implementation of
- * this security-sensitive code. The on-disk byte layout is unchanged from devUI.
+ * Lives in todl-platform-node so every host shares one implementation of
+ * this security-sensitive code. The on-disk byte layout is unchanged from the original devUI.
  */
 export interface Encryptor
 {

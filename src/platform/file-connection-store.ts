@@ -7,7 +7,7 @@
  * Reads the pre-engine flat format and maps it to a `ConnectionSpec` on load, so existing
  * users' connections.json keeps working; writes always use the spec format.
  *
- * Promoted from apps/devUI into plexus-core, on-disk layout unchanged (byte-compat).
+ * Lives in todl-platform-node so every host shares it; on-disk layout is byte-compatible with the original devUI implementation.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
